@@ -1,0 +1,17 @@
+{
+  "development": {
+    "fraction_bifidelity_better": 0.15,
+    "fraction_bifidelity_better_ci": [
+      -0.0200218451645639,
+      0.3200218451645639
+    ],
+    "geometric_error_ratio": 1.3453743752267655,
+    "geometric_error_ratio_ci": [
+      1.1802600718557954,
+      1.5335875987660796
+    ],
+    "n_audits": 60,
+    "n_seeds": 5,
+    "phase": "development"
+  }
+}
