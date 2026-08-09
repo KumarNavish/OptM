@@ -1,0 +1,31 @@
+name: V27 Research
+
+on:
+  pull_request:
+    branches: [master]
+    paths:
+      - "research_v27/**"
+      - ".github/workflows/v27-research.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run V27 smoke test
+        run: python research_v27/smoke.py
+      - name: Upload smoke artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: v27-smoke
+          path: research_v27/results
+          if-no-files-found: error

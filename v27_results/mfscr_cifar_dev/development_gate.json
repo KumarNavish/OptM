@@ -1,0 +1,23 @@
+{
+  "acc_ci": [
+    -0.689650013287098,
+    0.11631672257108572
+  ],
+  "advance_to_confirmation": false,
+  "forgetting_ci": [
+    -0.07646884180240687,
+    0.9598024192664312
+  ],
+  "loss_ci": [
+    -0.023527973826235227,
+    -0.0059069423521500835
+  ],
+  "mean_total_time_ratio_vs_tfhp": 0.8986995722213836,
+  "mechanism_pass": false,
+  "noninferiority_vs_tfhp": false,
+  "paired_time_difference_ci": [
+    -0.2999421090637132,
+    -0.10424735000293084
+  ],
+  "time_pass": false
+}
