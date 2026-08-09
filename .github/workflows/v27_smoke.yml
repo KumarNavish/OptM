@@ -1,0 +1,52 @@
+name: V27 research runner smoke
+
+on:
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: write
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+      - name: Skip result commits
+        id: guard
+        shell: bash
+        run: |
+          if git log -1 --pretty=%B | grep -q '\[v27-results\]'; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Write smoke result
+        if: steps.guard.outputs.skip != 'true'
+        shell: bash
+        run: |
+          mkdir -p v27_results
+          python - <<'PY'
+          import json, platform, sys, torch
+          out = {
+              "python": sys.version,
+              "platform": platform.platform(),
+              "torch": torch.__version__,
+              "cuda": torch.cuda.is_available(),
+          }
+          with open("v27_results/smoke.json", "w") as f:
+              json.dump(out, f, indent=2)
+          PY
+      - name: Commit smoke result
+        if: steps.guard.outputs.skip != 'true'
+        shell: bash
+        run: |
+          git config user.name "v27-research-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add v27_results/smoke.json
+          git commit -m "[v27-results] smoke" || exit 0
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
